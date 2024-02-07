@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
@@ -26,6 +26,7 @@ import com.ibm.websphere.ras.TraceComponent;
 import com.ibm.websphere.ras.annotation.Trivial;
 import com.ibm.ws.ffdc.annotation.FFDCIgnore;
 
+import io.openliberty.checkpoint.spi.CheckpointHook;
 import io.openliberty.checkpoint.spi.CheckpointPhase;
 import io.openliberty.microprofile.config.internal.extension.OLSmallRyeConfigExtension.UnpauseRecording;
 import io.openliberty.microprofile.config.internal.serverxml.AppPropertyConfigSource;
@@ -53,7 +54,17 @@ public class OLSmallRyeConfigBuilder extends SmallRyeConfigBuilder {
         for (ListIterator<ConfigSource> iSources = defaultSources.listIterator(); iSources.hasNext();) {
             ConfigSource source = iSources.next();
             if (source instanceof EnvConfigSource) {
-                iSources.set(new EnvConfigSource(doPrivileged((PrivilegedAction<Map<String, String>>) System::getenv), source.getOrdinal()));
+                EnvConfigSource envConfig = new EnvConfigSource(doPrivileged((PrivilegedAction<Map<String, String>>) System::getenv), source.getOrdinal());
+                // If checkpoint has been restored a new checkpointHook will be created on restore to reload the envVars map
+                if (!CheckpointPhase.getPhase().restored()) {
+                    CheckpointPhase.getPhase().addSingleThreadedHook(new CheckpointHook() {
+                        @Override
+                        public void restore() {
+                            envConfig.reloadEnvironment();
+                        };
+                    });
+                }
+                iSources.set(envConfig);
             }
         }
 
