@@ -1508,7 +1508,9 @@ public class ServerConfiguration implements Cloneable {
     }
 
     /**
-     * @return the fixPackReporting
+     * Get the 'cveReporting' elements.
+     *
+     * @return the CVEReporting
      */
     public CVEReportingElement getCVEReporting() {
         if (this.cveReporting == null)

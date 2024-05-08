@@ -45,7 +45,7 @@ CWWKF1704.incorrect.url=CWWKF1704W: The specified URL is not correct and a conne
 CWWKF1704.incorrect.url.explanation=No connection can be made for the provided URL.
 CWWKF1704.incorrect.url.useraction=Verify that the URL is correct.
 
-CWWKF1705.failed.response=CWWKF1705W: Unable to retrieve relevant CVE information due to a communication issue with the CVE Reporting Service.
+CWWKF1705.failed.response=CWWKF1705W: Unable to retrieve relevant CVE information due to a communication issue caused by: {0}
 CWWKF1705.failed.response.explanation=The service cannot provide a response.
 CWWKF1705.failed.response.useraction=Fix the communication issue and try again.
 

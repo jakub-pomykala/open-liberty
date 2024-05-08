@@ -56,18 +56,21 @@ public class ReporterTask implements Runnable {
         try {
             DataCollector collector = new DataCollector(featureProvisioner, fixManager, serverInfo);
             Map<String, String> data = collector.getData();
-            String urlLink = (String) props.get("urlLink");
+            String productEdition = data.get("productEdition");
+            String urlLink = setUrl(productEdition, (String) props.get("urlLink"));
             JSONObject response = new CVEServiceClient().retrieveCVEData(data, urlLink);
             CVEResponseHandler.handleResponse(data.get("productEdition"), response);
-        } catch (MalformedURLException e) {
+        } catch (
+
+        MalformedURLException e) {
             Tr.warning(tc, "CWWKF1704.incorrect.url", e.getMessage());
             if (TraceComponent.isAnyTracingEnabled() && tc.isDebugEnabled()) {
                 Tr.debug(tc, "Caused by: " + e);
             }
         } catch (IOException e) {
-            Tr.warning(tc, "CWWKF1705.failed.response");
+            String causes = buildExceptionMessage(e);
+            Tr.warning(tc, "CWWKF1705.failed.response", causes);
             if (TraceComponent.isAnyTracingEnabled() && tc.isDebugEnabled()) {
-                String causes = buildExceptionMessage(e);
                 Tr.debug(tc, "Failed due to: " + causes);
             }
 
@@ -110,6 +113,13 @@ public class ReporterTask implements Runnable {
         }
 
         return causes.toString();
+    }
+
+    public static String setUrl(String productEditon, String link) {
+        if (link == null || link.isEmpty()) {
+            link = (productEditon.equals("Open")) ? "https://cves.openliberty.io/report" : "https://cves.websphere.ibm.com/report";
+        }
+        return link;
     }
 
 }

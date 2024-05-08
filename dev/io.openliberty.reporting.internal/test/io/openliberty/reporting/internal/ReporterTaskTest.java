@@ -36,4 +36,53 @@ public class ReporterTaskTest {
         assertEquals("java.lang.Exception: TEST3: java.lang.Exception: TEST2: java.lang.Exception: TEST1", response);
     }
 
+    @Test
+    public void testSetUrlIfNull() {
+        String urlLink = null;
+        String productEdition = "Open";
+
+        String link = ReporterTask.setUrl(productEdition, urlLink);
+
+        assertEquals("https://cves.openliberty.io/report", link);
+    }
+
+    @Test
+    public void testSetUrlIfEmpty() {
+        String urlLink = "";
+        String productEdition = "Open";
+
+        String link = ReporterTask.setUrl(productEdition, urlLink);
+
+        assertEquals("https://cves.openliberty.io/report", link);
+    }
+
+    @Test
+    public void testSetUrlIfNullAndZOS() {
+        String urlLink = null;
+        String productEdition = "zOS";
+
+        String link = ReporterTask.setUrl(productEdition, urlLink);
+
+        assertEquals("https://cves.websphere.ibm.com/report", link);
+    }
+
+    @Test
+    public void testSetUrlIfEmptyAndZOS() {
+        String urlLink = "";
+        String productEdition = "zOS";
+
+        String link = ReporterTask.setUrl(productEdition, urlLink);
+
+        assertEquals("https://cves.websphere.ibm.com/report", link);
+    }
+
+    @Test
+    public void testSetUrlIfSet() {
+        String urlLink = "TESTING";
+        String productEdition = "Open";
+
+        String link = ReporterTask.setUrl(productEdition, urlLink);
+
+        assertEquals("TESTING", link);
+    }
 }
