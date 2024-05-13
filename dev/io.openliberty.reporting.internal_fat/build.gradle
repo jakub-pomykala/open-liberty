@@ -41,6 +41,7 @@ task addJsonBApi(type: Copy) {
 addRequiredLibraries {
     dependsOn addYasson
     dependsOn addJsonBApi
+    dependsOn copyTestContainers
 }
 
 dependencies {

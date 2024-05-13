@@ -17,6 +17,8 @@ fat.project: true
 
 tested.features: \
 	checkpoint
+	
+fat.test.container.images: localhost/cve-reporting:latest, localhost/si-service:latest, localhost/cve-service:latest
 
 -buildpath: \
 	../build.sharedResources/lib/junit/old/junit.jar;version=file,\
@@ -35,5 +37,6 @@ tested.features: \
 	com.ibm.ws.jmx.connector.client.restConnector;version=latest,\
 	io.openliberty.jakarta.jsonb.3.0;version=latest,\
 	io.openliberty.jakarta.restfulWS.3.1,\
-	io.openliberty.jakarta.servlet.6.0
+	io.openliberty.jakarta.servlet.6.0,\
+	io.openliberty.org.testcontainers;version=latest
 	

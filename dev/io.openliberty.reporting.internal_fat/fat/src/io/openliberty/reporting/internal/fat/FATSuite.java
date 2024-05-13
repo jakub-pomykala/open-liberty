@@ -14,9 +14,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import componenttest.containers.TestContainerSuite;
+
 @RunWith(Suite.class)
 @SuiteClasses({ CVEReportingConfigTest.class, CVEDataTest.class, CVEResponseTest.class,
-        CVEReportingCheckpointTest.class })
-public class FATSuite {
+                CVEReportingCheckpointTest.class, CVEIntegrationTest.class })
+public class FATSuite extends TestContainerSuite {
 
 }
